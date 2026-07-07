@@ -42,6 +42,7 @@ const App = () => (
           <Route path="/candidates" element={<PublicCandidatesView />} />
           <Route path="/setup-admin" element={<SetupAdmin />} />
           <Route path="/public-results" element={<PublicResults />} />
+          <Route path="/" element={<Index />} />
           
             <Route path="/register" element={<Register />} />
             
@@ -51,7 +52,7 @@ const App = () => (
          
           {/* Protected routes for general authenticated users */}
           <Route element={<ProtectedRoute allowedRoles={['general', 'admin']} />}>
-          <Route path="/" element={<Index />} />
+          
             <Route path="/dashboard" element={<Index />} />
             <Route path="/aspirant" element={<AspirantDashboard />} />
             <Route path="/vote" element={<Vote />} />
