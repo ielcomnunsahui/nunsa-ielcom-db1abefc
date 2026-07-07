@@ -59,12 +59,15 @@ export function AdminLiveResults() {
       if (cError) throw cError;
       setCandidates(cData || []);
 
-      const { data: vData, error: vError } = await supabase
-        .from('voters').select('id, voted').eq('verified', true);
-
-      if (vError) throw vError;
-      const total = vData?.length || 0;
-      const voted = vData?.filter(v => v.voted).length || 0;
+      // Bypass PostgREST 1000-row default: exact counts, no row fetch
+      const { count: totalCount, error: totalErr } = await supabase
+        .from('voters').select('*', { count: 'exact', head: true }).eq('verified', true);
+      if (totalErr) throw totalErr;
+      const { count: votedCount, error: votedErr } = await supabase
+        .from('voters').select('*', { count: 'exact', head: true }).eq('verified', true).eq('voted', true);
+      if (votedErr) throw votedErr;
+      const total = totalCount || 0;
+      const voted = votedCount || 0;
 
       setVotingStats({
         totalVoters: total,
