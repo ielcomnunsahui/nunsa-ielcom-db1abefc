@@ -1,0 +1,22 @@
+project_id = "lxjepsmgbqhjskwxpoyj"
+
+[functions.submit-vote]
+verify_jwt = true
+
+[functions.create-admin]
+verify_jwt = false
+
+[functions.send-otp]
+verify_jwt = false
+
+[functions.verify-otp]
+verify_jwt = false
+
+[functions.register-biometric]
+verify_jwt = false
+
+[functions.register-voter]
+verify_jwt = false
+
+[functions.lookup-voter]
+verify_jwt = false

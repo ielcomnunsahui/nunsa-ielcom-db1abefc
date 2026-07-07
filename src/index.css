@@ -1,0 +1,244 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Core brand colors - Trust & Security theme */
+    --background: 210 20% 98%;
+    --foreground: 215 25% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 215 25% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 25% 15%;
+
+    /* Primary - Deep Blue (Trust) */
+    --primary: 215 85% 35%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 215 85% 30%;
+    --primary-glow: 215 85% 50%;
+
+    /* Secondary - Teal (Technology) */
+    --secondary: 190 75% 40%;
+    --secondary-foreground: 0 0% 100%;
+    --secondary-hover: 190 75% 35%;
+
+    /* Success - Green (Democracy) */
+    --success: 145 65% 42%;
+    --success-foreground: 0 0% 100%;
+    --success-hover: 145 65% 37%;
+    --success-glow: 145 65% 55%;
+
+    --muted: 210 20% 92%;
+    --muted-foreground: 215 15% 45%;
+
+    --accent: 190 75% 40%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 214 20% 88%;
+    --input: 214 20% 92%;
+    --ring: 215 85% 35%;
+
+    --radius: 0.75rem;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(215 85% 35%), hsl(215 85% 50%));
+    --gradient-secondary: linear-gradient(135deg, hsl(190 75% 40%), hsl(190 75% 55%));
+    --gradient-success: linear-gradient(135deg, hsl(145 65% 42%), hsl(145 65% 55%));
+    --gradient-hero: linear-gradient(135deg, hsl(215 85% 35%) 0%, hsl(190 75% 40%) 100%);
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(215 25% 15% / 0.05);
+    --shadow-md: 0 4px 6px -1px hsl(215 25% 15% / 0.1);
+    --shadow-lg: 0 10px 15px -3px hsl(215 25% 15% / 0.1);
+    --shadow-glow: 0 0 30px hsl(215 85% 50% / 0.3);
+    --shadow-success-glow: 0 0 20px hsl(145 65% 55% / 0.3);
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  .dark {
+    --background: 215 30% 8%;
+    --foreground: 210 20% 95%;
+
+    --card: 215 25% 12%;
+    --card-foreground: 210 20% 95%;
+
+    --popover: 215 25% 12%;
+    --popover-foreground: 210 20% 95%;
+
+    --primary: 215 75% 55%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 215 75% 60%;
+
+    --secondary: 190 65% 50%;
+    --secondary-foreground: 0 0% 100%;
+
+    --success: 145 60% 50%;
+    --success-foreground: 0 0% 100%;
+
+    --muted: 215 20% 18%;
+    --muted-foreground: 215 10% 65%;
+
+    --accent: 190 65% 50%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 215 20% 22%;
+    --input: 215 20% 18%;
+    --ring: 215 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+  .hero-gradient {
+    background: var(--gradient-hero);
+  }
+}
+
+/* ============================================ */
+/* MOBILE TOUCH OPTIMIZATION FIXES */
+/* ============================================ */
+
+@layer base {
+  /* Global touch behavior optimization */
+  * {
+    /* Prevent double-tap zoom on mobile */
+    touch-action: manipulation;
+    /* Remove tap highlight on mobile browsers */
+    -webkit-tap-highlight-color: transparent;
+    /* Improve scrolling performance on iOS */
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Allow vertical scrolling for scrollable containers */
+  [class*="overflow-y-auto"],
+  [class*="overflow-y-scroll"] {
+    touch-action: pan-y;
+  }
+
+  /* Allow horizontal scrolling for scrollable containers */
+  [class*="overflow-x-auto"],
+  [class*="overflow-x-scroll"] {
+    touch-action: pan-x;
+  }
+
+  /* Improve button and link touch targets */
+  button,
+  a,
+  [role="button"],
+  [role="link"] {
+    /* Ensure minimum touch target size of 44x44px */
+    min-height: 44px;
+    min-width: 44px;
+    /* Prevent text selection on touch */
+    -webkit-user-select: none;
+    user-select: none;
+    /* Improve tap response */
+    cursor: pointer;
+  }
+
+  /* Prevent hover effects on touch devices */
+  @media (hover: none) and (pointer: coarse) {
+    /* Remove transform on hover for touch devices */
+    .hover\:scale-\[1\.03\]:hover,
+    .hover\:scale-105:hover,
+    .hover\:scale-110:hover {
+      transform: none !important;
+    }
+
+    /* Use active state instead of hover on touch devices */
+    button:active,
+    a:active,
+    [role="button"]:active {
+      opacity: 0.8;
+      transform: scale(0.98);
+    }
+  }
+
+  /* Fix for iOS Safari button styling */
+  button,
+  input[type="button"],
+  input[type="submit"] {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  /* Prevent zoom on input focus (iOS Safari) */
+  input,
+  select,
+  textarea {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+
+  /* Improve scrolling on mobile */
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Fix for sticky elements on mobile */
+  .sticky,
+  .fixed {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+}
+
+/* Mobile-specific utility classes */
+@layer utilities {
+  /* Touch-friendly spacing */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+
+  /* Prevent text selection */
+  .no-select {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  /* Active state for touch */
+  .touch-active:active {
+    @apply opacity-80 scale-95;
+  }
+
+  /* Safe area padding for notched devices */
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .safe-left {
+    padding-left: env(safe-area-inset-left);
+  }
+
+  .safe-right {
+    padding-right: env(safe-area-inset-right);
+  }
+}
