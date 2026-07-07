@@ -135,6 +135,7 @@ export type Database = {
           screening_scheduled_at: string | null
           status: string
           updated_at: string | null
+          user_id: string | null
           why_running: string
         }
         Insert: {
@@ -173,6 +174,7 @@ export type Database = {
           screening_scheduled_at?: string | null
           status?: string
           updated_at?: string | null
+          user_id?: string | null
           why_running: string
         }
         Update: {
@@ -211,6 +213,7 @@ export type Database = {
           screening_scheduled_at?: string | null
           status?: string
           updated_at?: string | null
+          user_id?: string | null
           why_running?: string
         }
         Relationships: [
@@ -255,6 +258,7 @@ export type Database = {
           created_at: string | null
           full_name: string
           id: string
+          manifesto: string | null
           picture_url: string | null
           position: string
           vote_count: number | null
@@ -263,6 +267,7 @@ export type Database = {
           created_at?: string | null
           full_name: string
           id?: string
+          manifesto?: string | null
           picture_url?: string | null
           position: string
           vote_count?: number | null
@@ -271,6 +276,7 @@ export type Database = {
           created_at?: string | null
           full_name?: string
           id?: string
+          manifesto?: string | null
           picture_url?: string | null
           position?: string
           vote_count?: number | null
@@ -279,26 +285,35 @@ export type Database = {
       }
       election_timeline: {
         Row: {
+          color_class: string | null
           created_at: string | null
           end_time: string
           id: string
           is_active: boolean | null
+          link_id: string | null
+          link_text: string | null
           stage_name: string
           start_time: string
         }
         Insert: {
+          color_class?: string | null
           created_at?: string | null
           end_time: string
           id?: string
           is_active?: boolean | null
+          link_id?: string | null
+          link_text?: string | null
           stage_name: string
           start_time: string
         }
         Update: {
+          color_class?: string | null
           created_at?: string | null
           end_time?: string
           id?: string
           is_active?: boolean | null
+          link_id?: string | null
+          link_text?: string | null
           stage_name?: string
           start_time?: string
         }
@@ -397,18 +412,21 @@ export type Database = {
         Row: {
           created_at: string | null
           id: string
+          level: string | null
           matric: string
           name: string
         }
         Insert: {
           created_at?: string | null
           id?: string
+          level?: string | null
           matric: string
           name: string
         }
         Update: {
           created_at?: string | null
           id?: string
+          level?: string | null
           matric?: string
           name?: string
         }
