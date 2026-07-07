@@ -361,7 +361,7 @@ const Index = () => {
                 <section className="py-16 md:py-24 px-4 bg-white dark:bg-gray-950">
                     <div className="container mx-auto max-w-6xl">
                         <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-12 text-foreground">
-                            Meet the Electoral Committee ⚖️
+                            Meet the Electoral Committee 2025/2026 ⚖️
                         </h2>
                         
                         <Collapsible className="w-full">
