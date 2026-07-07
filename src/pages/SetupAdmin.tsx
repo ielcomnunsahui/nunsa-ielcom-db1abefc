@@ -62,7 +62,7 @@ const SetupAdmin = () => {
                 This will create an admin account with the following credentials:
               </p>
               <ul className="mt-2 space-y-1 text-sm">
-                <li><strong>Email:</strong> ielcomnunsahui@gmail.co</li>
+                <li><strong>Email:</strong> ielcomnunsahui@gmail.com</li>
                 <li><strong>Password:</strong> IELCOM@2025</li>
               </ul>
             </div>
