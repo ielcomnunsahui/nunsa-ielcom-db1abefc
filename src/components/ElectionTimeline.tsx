@@ -108,7 +108,7 @@ const StageCard: React.FC<StageCardProps> = ({ stage, index, totalStages }) => {
     const stageNameLower = stage.stage_name.toLowerCase();
     
     let buttonText = 'Upcoming'; // Default for upcoming
-    let buttonVariant = 'outline';
+    let buttonVariant: 'default' | 'destructive' | 'ghost' | 'link' | 'outline' | 'secondary' | 'vote' = 'outline';
     let buttonClass = '';
     let isButtonDisabled = false;
 
