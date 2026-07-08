@@ -408,6 +408,48 @@ export type Database = {
         }
         Relationships: []
       }
+      registration_otp: {
+        Row: {
+          attempts: number
+          created_at: string
+          email: string
+          expires_at: string
+          id: string
+          last_sent_at: string
+          matric: string
+          name: string
+          otp_code: string
+          updated_at: string
+          verified: boolean
+        }
+        Insert: {
+          attempts?: number
+          created_at?: string
+          email: string
+          expires_at: string
+          id?: string
+          last_sent_at?: string
+          matric: string
+          name: string
+          otp_code: string
+          updated_at?: string
+          verified?: boolean
+        }
+        Update: {
+          attempts?: number
+          created_at?: string
+          email?: string
+          expires_at?: string
+          id?: string
+          last_sent_at?: string
+          matric?: string
+          name?: string
+          otp_code?: string
+          updated_at?: string
+          verified?: boolean
+        }
+        Relationships: []
+      }
       student_roster: {
         Row: {
           created_at: string | null
@@ -472,6 +514,7 @@ export type Database = {
           created_at: string | null
           expires_at: string | null
           id: string
+          last_sent_at: string
           otp_code: string
           verified: boolean | null
           voter_id: string | null
@@ -480,6 +523,7 @@ export type Database = {
           created_at?: string | null
           expires_at?: string | null
           id?: string
+          last_sent_at?: string
           otp_code: string
           verified?: boolean | null
           voter_id?: string | null
@@ -488,6 +532,7 @@ export type Database = {
           created_at?: string | null
           expires_at?: string | null
           id?: string
+          last_sent_at?: string
           otp_code?: string
           verified?: boolean | null
           voter_id?: string | null
@@ -581,6 +626,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_aspirant_statistics: { Args: never; Returns: Json }
       increment_vote_count: {
         Args: { candidate_id: string }
         Returns: undefined

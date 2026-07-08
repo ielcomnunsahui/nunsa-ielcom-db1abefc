@@ -225,77 +225,24 @@ const AspirantLogin = () => {
               </TabsContent>
 
               <TabsContent value="signup" className="space-y-4 mt-6">
-                <form onSubmit={handleSignup} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-email">Email</Label>
-                    <Input
-                      id="signup-email"
-                      type="email"
-                      value={signupData.email}
-                      onChange={(e) => setSignupData(prev => ({ ...prev, email: e.target.value }))}
-                      placeholder="your.email@example.com"
-                      required
-                    />
+                <div className="space-y-4 text-center">
+                  <div className="p-4 bg-muted/30 rounded-lg text-left">
+                    <h4 className="font-semibold text-sm mb-2 text-foreground">One account for voting & aspiring</h4>
+                    <p className="text-xs text-muted-foreground">
+                      Sign up on the voter registration page with your <strong>full name</strong>, <strong>matric number</strong>, <strong>email</strong> and <strong>password</strong>.
+                      The same account lets you log in here to apply for a position.
+                    </p>
                   </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-password">Password</Label>
-                    <div className="relative">
-                      <Input
-                        id="signup-password"
-                        type={showPassword ? "text" : "password"}
-                        value={signupData.password}
-                        onChange={(e) => setSignupData(prev => ({ ...prev, password: e.target.value }))}
-                        placeholder="Create a password (min 6 characters)"
-                        required
-                        minLength={6}
-                      />
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                        onClick={() => setShowPassword(!showPassword)}
-                      >
-                        {showPassword ? (
-                          <EyeOff className="h-4 w-4 text-muted-foreground" />
-                        ) : (
-                          <Eye className="h-4 w-4 text-muted-foreground" />
-                        )}
-                      </Button>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="confirm-password">Confirm Password</Label>
-                    <Input
-                      id="confirm-password"
-                      type="password"
-                      value={signupData.confirmPassword}
-                      onChange={(e) => setSignupData(prev => ({ ...prev, confirmPassword: e.target.value }))}
-                      placeholder="Confirm your password"
-                      required
-                    />
-                  </div>
-
                   <Button
-                    type="submit"
-                    className="w-full bg-gradient-primary"
-                    disabled={isLoading}
+                    onClick={() => navigate("/register")}
+                    className="w-full bg-gradient-secondary text-lg py-6"
                   >
-                    {isLoading ? (
-                      <>
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        Creating account...
-                      </>
-                    ) : (
-                      <>
-                        <UserPlus className="w-4 h-4 mr-2" />
-                        Create Aspirant Account
-                      </>
-                    )}
+                    <UserPlus className="w-5 h-5 mr-2" /> Create Account on Registration Page
                   </Button>
-                </form>
+                  <p className="text-xs text-muted-foreground">
+                    Already registered as a voter? Just use the <strong>Login</strong> tab above with the same email and password.
+                  </p>
+                </div>
               </TabsContent>
             </Tabs>
           </Card>

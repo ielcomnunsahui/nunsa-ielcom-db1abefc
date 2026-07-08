@@ -141,34 +141,34 @@ export function AdminAspirants() {
   const fetchAspirants = useCallback(async () => {
     setIsLoading(true);
     try {
-      // Fetch data and statistics concurrently
-      const [aspirantsResult, statsResult] = await Promise.all([
-        supabase
-          .from("aspirants")
-          .select(
-            `
-            *,
-            aspirant_positions (
-              name,
-              application_fee
-            )
-          `
-          )
-          .order("created_at", { ascending: false }),
-        (supabase.rpc as any)("get_aspirant_statistics"),
-      ]);
+      const { data: aspData, error: aspErr } = await supabase
+        .from("aspirants")
+        .select(`*, aspirant_positions:position_id (name, application_fee)`)
+        .order("created_at", { ascending: false });
+      if (aspErr) throw aspErr;
 
-      if (aspirantsResult.error) throw aspirantsResult.error;
-      if (statsResult.error) throw statsResult.error;
+      const list = (aspData ?? []) as Aspirant[];
+      setAspirants(list);
 
-      setAspirants(aspirantsResult.data as Aspirant[]);
-      setStats(statsResult.data as AspirantStats);
-
+      // Try RPC first; fall back to client-side aggregation
+      let statsData: AspirantStats | null = null;
+      const { data: rpc } = await (supabase.rpc as any)("get_aspirant_statistics");
+      if (rpc && typeof rpc === "object") statsData = rpc as AspirantStats;
+      if (!statsData) {
+        statsData = {
+          total: list.length,
+          pending: list.filter((a: any) => a.status === "pending").length,
+          qualified: list.filter((a: any) => a.status === "qualified").length,
+          disqualified: list.filter((a: any) => a.status === "disqualified").length,
+          promoted: list.filter((a: any) => a.status === "promoted").length,
+        } as any;
+      }
+      setStats(statsData);
     } catch (error) {
       console.error("Error fetching aspirants:", error);
       toast({
         title: "Error",
-        description: "Failed to fetch aspirant data.",
+        description: (error as any)?.message || "Failed to fetch aspirant data.",
         variant: "destructive",
       });
     } finally {
