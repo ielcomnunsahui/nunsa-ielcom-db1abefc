@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useToast } from "@/hooks/use-toast";
 import { Eye, EyeOff, Loader2, LogIn, UserPlus, Trophy } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import RegistrationFlow from "@/components/RegistrationFlow";
 
 const AspirantLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
