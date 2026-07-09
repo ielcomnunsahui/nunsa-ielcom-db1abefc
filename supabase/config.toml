@@ -1,1 +1,16 @@
 project_id = "nkfdonvsouezpxbgukco"
+
+[functions.check-matric]
+verify_jwt = false
+
+[functions.register-start]
+verify_jwt = false
+
+[functions.register-verify]
+verify_jwt = false
+
+[functions.register-resend]
+verify_jwt = false
+
+[functions.register-complete]
+verify_jwt = false
