@@ -225,24 +225,12 @@ const AspirantLogin = () => {
               </TabsContent>
 
               <TabsContent value="signup" className="space-y-4 mt-6">
-                <div className="space-y-4 text-center">
-                  <div className="p-4 bg-muted/30 rounded-lg text-left">
-                    <h4 className="font-semibold text-sm mb-2 text-foreground">One account for voting & aspiring</h4>
-                    <p className="text-xs text-muted-foreground">
-                      Sign up on the voter registration page with your <strong>full name</strong>, <strong>matric number</strong>, <strong>email</strong> and <strong>password</strong>.
-                      The same account lets you log in here to apply for a position.
-                    </p>
-                  </div>
-                  <Button
-                    onClick={() => navigate("/register")}
-                    className="w-full bg-gradient-secondary text-lg py-6"
-                  >
-                    <UserPlus className="w-5 h-5 mr-2" /> Create Account on Registration Page
-                  </Button>
+                <div className="p-3 bg-muted/30 rounded-lg mb-4">
                   <p className="text-xs text-muted-foreground">
-                    Already registered as a voter? Just use the <strong>Login</strong> tab above with the same email and password.
+                    <strong>One account for voting & aspiring.</strong> Complete registration here — the same email and password will log you in to the aspirant portal.
                   </p>
                 </div>
+                <RegistrationFlow successMessage="You've registered! Log in on the Login tab to apply as an aspirant." />
               </TabsContent>
             </Tabs>
           </Card>
