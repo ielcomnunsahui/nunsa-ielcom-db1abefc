@@ -89,7 +89,7 @@ const Hero = () => {
                             className="bg-green-500 hover:bg-green-600 text-white shadow-xl text-base h-12 w-full sm:w-64 transition-transform transform hover:scale-[1.03]"
                         >
                             <Link to="/register">
-                                <UserPlus className="w-5 h-5 mr-2" /> Register to Participate
+                                <UserPlus className="w-5 h-5 mr-2" /> Register to Vote
                             </Link>
                         </Button>
                     );
