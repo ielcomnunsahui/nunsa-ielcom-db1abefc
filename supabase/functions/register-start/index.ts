@@ -78,9 +78,10 @@ serve(async (req) => {
     if (insErr) throw insErr;
 
     // 5) Send email
+    const FROM = Deno.env.get("RESEND_FROM") ?? "NUNSA Elections <onboarding@resend.dev>";
     try {
-      await resend.emails.send({
-        from: "NUNSA Elections <no-reply@huinunsa.xyz>",
+      const send = await resend.emails.send({
+        from: FROM,
         to: email,
         subject: "Your NUNSA Election Verification Code",
         html: `
@@ -93,9 +94,16 @@ serve(async (req) => {
             <p style="color:#666;font-size:12px;">NUNSA Independent Student Electoral Committee</p>
           </div>`,
       });
-    } catch (e) {
-      console.error("Resend error:", e);
-      return json({ error: "Could not send the verification email. Please try again." }, 502);
+      console.log("Resend response:", JSON.stringify(send));
+      if ((send as any)?.error) {
+        const errObj = (send as any).error;
+        const msg = errObj?.message ?? JSON.stringify(errObj);
+        console.error("Resend returned error:", msg);
+        return json({ error: `Email provider error: ${msg}` }, 502);
+      }
+    } catch (e: any) {
+      console.error("Resend threw:", e?.message ?? e);
+      return json({ error: `Could not send the verification email: ${e?.message ?? "unknown"}` }, 502);
     }
 
     return json({ registrationId: reg.id, email, expiresInSeconds: OTP_TTL_MINUTES * 60 }, 200);
