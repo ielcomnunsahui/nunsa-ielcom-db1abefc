@@ -1,0 +1,1 @@
+INSERT INTO public.student_roster (matric, name) VALUES ('99/99tst001', 'Test Student') ON CONFLICT DO NOTHING;
