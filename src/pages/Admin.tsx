@@ -55,10 +55,15 @@ const StatCard: React.FC<{ icon: React.ElementType, title: string, value: number
   </Card>
 );
 
+const ADMIN_CACHE_KEY = "nunsa_admin_verified";
+
 const Admin = () => {
   const [user, setUser] = useState<any>(null);
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(() => {
+    // Optimistic: trust cached admin flag while we re-verify in the background
+    return sessionStorage.getItem(ADMIN_CACHE_KEY) === "true";
+  });
+  const [isLoading, setIsLoading] = useState(() => sessionStorage.getItem(ADMIN_CACHE_KEY) !== "true");
   const [isStatsLoading, setIsStatsLoading] = useState(false);
   const [stats, setStats] = useState<Stats>({
     totalVoters: 0,
@@ -106,6 +111,7 @@ const Admin = () => {
       const { data: { user: authUser } } = await supabase.auth.getUser();
 
       if (!authUser) {
+        sessionStorage.removeItem(ADMIN_CACHE_KEY);
         navigate("/admin-login");
         return;
       }
@@ -121,6 +127,7 @@ const Admin = () => {
       if (adminError) throw adminError;
 
       if (!adminData) {
+        sessionStorage.removeItem(ADMIN_CACHE_KEY);
         toast({
           title: "Access Denied",
           description: "You do not have admin privileges.",
@@ -130,6 +137,7 @@ const Admin = () => {
         return;
       }
 
+      sessionStorage.setItem(ADMIN_CACHE_KEY, "true");
       setIsAdmin(true);
       await fetchStats();
 
