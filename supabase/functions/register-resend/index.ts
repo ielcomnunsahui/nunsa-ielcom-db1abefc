@@ -49,9 +49,10 @@ serve(async (req) => {
       .eq("id", registrationId);
     if (updErr) throw updErr;
 
+    const FROM = Deno.env.get("RESEND_FROM") ?? "NUNSA Elections <onboarding@resend.dev>";
     try {
-      await resend.emails.send({
-        from: "NUNSA Elections <no-reply@huinunsa.xyz>",
+      const send = await resend.emails.send({
+        from: FROM,
         to: reg.email,
         subject: "Your NUNSA Election Verification Code",
         html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;">
@@ -61,9 +62,16 @@ serve(async (req) => {
           <p>This code expires in ${OTP_TTL_MINUTES} minutes.</p>
         </div>`,
       });
-    } catch (e) {
-      console.error("Resend error:", e);
-      return json({ error: "Could not resend the verification email." }, 502);
+      console.log("Resend response:", JSON.stringify(send));
+      if ((send as any)?.error) {
+        const errObj = (send as any).error;
+        const msg = errObj?.message ?? JSON.stringify(errObj);
+        console.error("Resend returned error:", msg);
+        return json({ error: `Email provider error: ${msg}` }, 502);
+      }
+    } catch (e: any) {
+      console.error("Resend threw:", e?.message ?? e);
+      return json({ error: `Could not resend the verification email: ${e?.message ?? "unknown"}` }, 502);
     }
 
     return json({ success: true, expiresInSeconds: OTP_TTL_MINUTES * 60 }, 200);
