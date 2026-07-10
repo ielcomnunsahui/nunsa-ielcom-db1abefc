@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
-import { Clock, CheckCircle, ArrowRight, CalendarCheck, Loader2, AlertCircle } from "lucide-react";
+import { Clock, CheckCircle, ArrowRight, CalendarCheck, Loader2, AlertCircle, UserPlus, Vote } from "lucide-react";
 import { Button } from "@/components/ui/button"; // Assuming your ShadCN/Radix UI Button component
+import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client"; // Added to enable data fetching logic
 
 // --- 1. Interfaces ---
@@ -18,6 +19,7 @@ interface CountdownTimerProps {
     linkToId?: string;
     linkText?: string;
     linkVariant?: "default" | "success" | "outline";
+    stageCta?: { to: string; label: string; icon: "register" | "vote" } | null;
 }
 
 interface TimelineStage {
@@ -49,6 +51,7 @@ const CountdownTimer = ({
     linkToId,
     linkText,
     linkVariant = "default",
+    stageCta,
 }: CountdownTimerProps) => {
 
     const calculateTimeLeft = useCallback((): TimeLeft => {
@@ -180,6 +183,22 @@ const CountdownTimer = ({
                                 : `Ends: ${targetDate.toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' })}`}
                         </span>
                     </div>
+
+                    {/* Stage-specific CTA */}
+                    {!isTimeUp && stageCta && (
+                        <div className="pt-2">
+                            <Button
+                                asChild
+                                size="lg"
+                                className="w-full sm:w-auto bg-white text-gray-900 hover:bg-gray-100 shadow-lg font-semibold h-11 px-6"
+                            >
+                                <Link to={stageCta.to}>
+                                    {stageCta.icon === "register" ? <UserPlus className="w-5 h-5 mr-2" /> : <Vote className="w-5 h-5 mr-2" />}
+                                    {stageCta.label}
+                                </Link>
+                            </Button>
+                        </div>
+                    )}
                 </div>
 
                 {/* Decorative background circles (Styling remains for visual interest) */}
@@ -261,6 +280,14 @@ export function CurrentStageCountdown() {
     }
 
     // --- Render the Countdown Component ---
+    const nameLc = currentStage.stage_name.toLowerCase();
+    let stageCta: { to: string; label: string; icon: "register" | "vote" } | null = null;
+    if (nameLc.includes("registration")) {
+        stageCta = { to: "/register", label: "Register to Vote", icon: "register" };
+    } else if (nameLc.includes("voting")) {
+        stageCta = { to: "/vote", label: "Vote Now", icon: "vote" };
+    }
+
     return (
         <CountdownTimer 
             targetDate={new Date(currentStage.end_time)}
@@ -268,7 +295,7 @@ export function CurrentStageCountdown() {
             stageColor={currentStage.color_class || 'bg-blue-600'}
             linkToId={currentStage.link_id}
             linkText={currentStage.link_text}
-            // Add linkVariant if you pass it from the DB
+            stageCta={stageCta}
         />
     );
 }
