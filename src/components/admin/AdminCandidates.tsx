@@ -146,24 +146,27 @@ export function AdminCandidates() {
         setIsUploading(true);
         const fileExt = file.name.split('.').pop();
         const fileName = `candidate-${Date.now()}.${fileExt}`;
-        const filePath = `candidates/${fileName}`;
+        const filePath = fileName;
 
         const { error: uploadError } = await supabase.storage
-            .from('aspirant-documents')
-            .upload(filePath, file);
+            .from('candidate-photos')
+            .upload(filePath, file, { upsert: true });
 
         if (uploadError) throw uploadError;
 
-        const { data: { publicUrl } } = supabase.storage
-            .from('aspirant-documents')
-            .getPublicUrl(filePath);
+        // Generate a long-lived signed URL (10 years) since the bucket is private
+        const { data: signed, error: signErr } = await supabase.storage
+            .from('candidate-photos')
+            .createSignedUrl(filePath, 60 * 60 * 24 * 365 * 10);
 
-        return publicUrl;
+        if (signErr || !signed?.signedUrl) throw signErr ?? new Error("Could not sign URL");
+
+        return signed.signedUrl;
     } catch (error) {
         console.error("Error uploading image:", error);
         toast({
             title: "Upload Failed",
-            description: "Failed to upload candidate photo",
+            description: `Failed to upload candidate photo. ${(error as Error).message}`,
             variant: "destructive",
         });
         return null;
