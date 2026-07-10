@@ -1,143 +1,26 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useToast } from "@/hooks/use-toast";
-import { Eye, EyeOff, Loader2, LogIn, UserPlus, Trophy } from "lucide-react";
+import { Trophy } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import RegistrationFlow from "@/components/RegistrationFlow";
+import MatricLoginForm from "@/components/MatricLoginForm";
 
 const AspirantLogin = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
-  const [loginData, setLoginData] = useState({
-    email: "",
-    password: "",
-  });
-  const [signupData, setSignupData] = useState({
-    email: "",
-    password: "",
-    confirmPassword: "",
-  });
-  const { toast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
-
-  // Get the return URL from location state or default to aspirant dashboard
-  const returnTo = location.state?.returnTo || "/aspirant";
+  const returnTo = (location.state as any)?.returnTo || "/aspirant";
 
   useEffect(() => {
-    // Check if user is already logged in
     const checkUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
-      if (user) {
-          // Regular user - redirect to aspirant dashboard
-          navigate(returnTo);
-        }
-      };
+      if (user) navigate(returnTo);
+    };
     checkUser();
   }, [navigate, returnTo]);
-
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: loginData.email,
-        password: loginData.password,
-      });
-
-      if (error) throw error;
-
-      if (data.user) {
-
-        toast({
-          title: "Login Successful",
-          description: `Welcome back to your aspirant dashboard!`,
-        });
-
-        navigate(returnTo);
-      }
-    } catch (error) {
-      console.error("Login error:", error);
-      const errorMessage = error instanceof Error ? error.message : "Invalid email or password";
-      toast({
-        title: "Login Failed",
-        description: errorMessage,
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleSignup = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (signupData.password !== signupData.confirmPassword) {
-      toast({
-        title: "Password Mismatch",
-        description: "Passwords do not match",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    if (signupData.password.length < 6) {
-      toast({
-        title: "Weak Password",
-        description: "Password must be at least 6 characters long",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setIsLoading(true);
-
-    try {
-      const { data, error } = await supabase.auth.signUp({
-        email: signupData.email,
-        password: signupData.password,
-      });
-
-      if (error) throw error;
-
-      if (data.user) {
-        toast({
-          title: "Account Created",
-          description: "Your aspirant account has been created successfully. You can now log in.",
-        });
-
-        // Clear signup form and switch to login tab
-        setSignupData({
-          email: "",
-          password: "",
-          confirmPassword: "",
-        });
-        
-        // Auto-fill login form
-        setLoginData({
-          email: signupData.email,
-          password: "",
-        });
-      }
-    } catch (error) {
-      console.error("Signup error:", error);
-      const errorMessage = error instanceof Error ? error.message : "Failed to create account";
-      toast({
-        title: "Signup Failed",
-        description: errorMessage,
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -153,7 +36,7 @@ const AspirantLogin = () => {
               Aspirant Portal
             </h1>
             <p className="text-lg text-muted-foreground">
-              Access your aspirant dashboard and manage your application
+              Log in with your matric number and password to manage your application
             </p>
           </div>
 
@@ -165,64 +48,7 @@ const AspirantLogin = () => {
               </TabsList>
 
               <TabsContent value="login" className="space-y-4 mt-6">
-                <form onSubmit={handleLogin} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="login-email">Email</Label>
-                    <Input
-                      id="login-email"
-                      type="email"
-                      value={loginData.email}
-                      onChange={(e) => setLoginData(prev => ({ ...prev, email: e.target.value }))}
-                      placeholder="your.email@example.com"
-                      required
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="login-password">Password</Label>
-                    <div className="relative">
-                      <Input
-                        id="login-password"
-                        type={showPassword ? "text" : "password"}
-                        value={loginData.password}
-                        onChange={(e) => setLoginData(prev => ({ ...prev, password: e.target.value }))}
-                        placeholder="Enter your password"
-                        required
-                      />
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                        onClick={() => setShowPassword(!showPassword)}
-                      >
-                        {showPassword ? (
-                          <EyeOff className="h-4 w-4 text-muted-foreground" />
-                        ) : (
-                          <Eye className="h-4 w-4 text-muted-foreground" />
-                        )}
-                      </Button>
-                    </div>
-                  </div>
-
-                  <Button
-                    type="submit"
-                    className="w-full bg-gradient-secondary"
-                    disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      <>
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        Logging in...
-                      </>
-                    ) : (
-                      <>
-                        <LogIn className="w-4 h-4 mr-2" />
-                        Access Dashboard
-                      </>
-                    )}
-                  </Button>
-                </form>
+                <MatricLoginForm variant="secondary" loginLabel="Access Dashboard" onSuccess={() => navigate(returnTo)} />
               </TabsContent>
 
               <TabsContent value="signup" className="space-y-4 mt-6">
