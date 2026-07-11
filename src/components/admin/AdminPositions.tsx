@@ -83,7 +83,7 @@ export function AdminPositions() {
     application_fee: 0,
     min_cgpa: 3.0,
     // REMOVED: min_level, max_level
-    eligible_levels_input: "300, 400, 500", // Input string for simplicity in admin form
+    eligible_levels_input: "100, 200, 300, 400, 500", // Input string for simplicity in admin form
     description: "",
     is_open: true, // RENAMED: from is_active
   });
@@ -376,7 +376,7 @@ export function AdminPositions() {
         name: "",
         application_fee: 0,
         min_cgpa: 3.0,
-        eligible_levels_input: "200, 300, 400, 500",
+        eligible_levels_input: "100, 200, 300, 400, 500",
         description: "",
         is_open: true,
       });
@@ -524,7 +524,7 @@ export function AdminPositions() {
       name: "",
       application_fee: 0,
       min_cgpa: 3.0,
-      eligible_levels_input: "200, 300, 400, 500",
+      eligible_levels_input: "100, 200, 300, 400, 500",
       description: "",
       is_open: true,
     });
@@ -651,7 +651,7 @@ export function AdminPositions() {
                       </div>
                       <div className="col-span-1">
                         <Label htmlFor="eligible_levels_input">
-                          Eligible Levels (e.g. 200, 300, 400)
+                          Eligible Levels (e.g. 100, 200, 300, 400)
                         </Label>
                         <Input
                           id="eligible_levels_input"
@@ -662,7 +662,7 @@ export function AdminPositions() {
                               eligible_levels_input: e.target.value,
                             })
                           }
-                          placeholder="e.g., 200, 300, 400, 500"
+                          placeholder="e.g., 100, 200, 300, 400, 500"
                           required
                         />
                         <p className="text-xs text-muted-foreground mt-1">
