@@ -419,7 +419,10 @@ export function AdminAspirants() {
         <Button
           variant={viewFullOption ? "default" : "outline"}
           size="sm"
-          onClick={() => window.open(url, '_blank')}
+          onClick={async () => {
+            const signed = await getSignedStorageUrl("aspirant-documents", url, 3600);
+            window.open(signed || url, "_blank");
+          }}
         >
           <Eye className="w-4 h-4 mr-1" />
           
@@ -498,8 +501,8 @@ Please prepare all required documents and be punctual.`;
                     <h4 className="font-semibold text-base">Aspirant Photo</h4>
                     {aspirant.photo_url ? (
                         <div className="aspect-square w-full max-w-[200px] border rounded-md overflow-hidden">
-                            <img
-                                src={aspirant.photo_url}
+                            <SignedImage
+                                url={aspirant.photo_url}
                                 alt={`${aspirant.full_name}'s photo`}
                                 className="w-full h-full object-cover"
                             />
