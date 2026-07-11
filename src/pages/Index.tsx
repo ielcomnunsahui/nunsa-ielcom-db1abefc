@@ -318,9 +318,15 @@ const Index = () => {
                 {/* ========================================================= */}
                 <section className="py-16 md:py-24 px-4 bg-white dark:bg-gray-950">
                     <div className="container mx-auto max-w-6xl">
-                        <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-12 text-foreground">
-                            Meet the Electoral Committee 2025/2026 ⚖️
+                        <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-4 text-foreground">
+                            Meet the Electoral Committee 2026/2027 ⚖️
                         </h2>
+                        <p className="text-center text-muted-foreground mb-8">
+                            Looking for previous sessions?{" "}
+                            <Link to="/electoral-committee" className="text-primary font-semibold underline underline-offset-4">
+                                View all electoral committees
+                            </Link>
+                        </p>
                         
                         <Collapsible className="w-full">
                             <CollapsibleTrigger asChild>
