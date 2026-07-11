@@ -32,6 +32,9 @@ import secretaryImage from "@/assets/secretary.jpg";
 import girkaImage from "@/assets/girka.jpg";
 import simbiatImage from "@/assets/simbiat.jpg";
 import jubrilImage from "@/assets/jubril.jpg";
+import OyetundeMariam from "@/assets/OyetundeMariam.png";
+import IdrisAbidat from "@/assets/IdrisAbidat.png";
+import AbdulqoyyumNajeemdeen from "@/assets/AbdulqoyyumNajeemdeen.png";
 
 
 // --- TYPE DEFINITIONS ---
@@ -58,9 +61,9 @@ const committeeMembers: CommitteeMember[] = [
     { role: "Deputy Chairman", name: "Ahmad Usman Girka", level: "400L", faculty: "Nursing Science", image: girkaImage },
     { role: "Electoral Organizer", name: "Lawal Jubril", level: "300L", faculty: "Nursing Science", image: jubrilImage },
     { role: "Secretary", name: "Yisa-Apata Islamiat", level: "300L", faculty: "Nursing Science", image: secretaryImage },
-    { role: "Treasurer", name: "Oyetunde Mariam", level: "200L", faculty: "Nursing Science", image: null },
-    { role: "P.R.O I", name: "Abdulqoyyum Najeemdeen", level: "200L", faculty: "Nursing Science", image: null },
-    { role: "P.R.O II", name: "Idris Abidat", level: "100L", faculty: "Nursing Science", image: null },
+    { role: "Treasurer", name: "Oyetunde Mariam", level: "200L", faculty: "Nursing Science", image: OyetundeMariam },
+    { role: "P.R.O I", name: "Abdulqoyyum Najeemdeen", level: "200L", faculty: "Nursing Science", image: AbdulqoyyumNajeemdeen },
+    { role: "P.R.O II", name: "Idris Abidat", level: "100L", faculty: "Nursing Science", image: IdrisAbidat },
 ];
 
 // --- COMMITTEE MEMBER CARD COMPONENT ---
