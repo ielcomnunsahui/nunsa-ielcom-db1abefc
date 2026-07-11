@@ -66,7 +66,7 @@ const committeeMembers: CommitteeMember[] = [
 // --- COMMITTEE MEMBER CARD COMPONENT ---
 const CommitteeMemberCard = ({ role, name, level, faculty, image }: CommitteeMember) => {
     // Basic heuristic to determine male/female placeholder for missing image
-    const isFemale = name.includes("Sherifat") || name.includes("Islamiat") || name.includes("Zulaihat") || name.includes("Simbiat");
+    const isFemale = name.includes("Sherifat") || name.includes("Islamiat") || name.includes("Zulaihat") || name.includes("Simbiat") || name.includes("Mariam") || name.includes("Abidat");
     
     return (
         <Card className="p-4 flex flex-col items-center text-center hover:shadow-xl transition-shadow duration-300">
