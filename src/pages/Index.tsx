@@ -52,63 +52,21 @@ interface CommitteeMember {
     image: string | null;
 }
 
-// --- COMMITTEE MEMBER DATA ---
+// --- COMMITTEE MEMBER DATA (2026/2027 – current session) ---
 const committeeMembers: CommitteeMember[] = [
-    { 
-        role: "Chairman", 
-        name: "Awwal Abubakar Sadik", 
-        level: "500L", 
-        faculty: "Nursing Science", 
-        image: chairmanImage 
-    },
-    { 
-        role: "Deputy Chairman", 
-        name: "Abdulhameed Sherifat O.", 
-        level: "500L", 
-        faculty: "Nursing Science", 
-        image: deputyChairmanImage 
-    },
-    { 
-        role: "Secretary", 
-        name: "Yisa-Apata Islamiat T.", 
-        level: "300L", 
-        faculty: "Nursing Science", 
-        image: secretaryImage 
-    },
-    { 
-        role: "Treasurer", 
-        name: "Musa Zulaihat Dalhatu", 
-        level: "500L", 
-        faculty: "Nursing Science", 
-        image: null // Placeholder used as requested
-    },
-    { 
-        role: "Electoral Organizer", 
-        name: "Ahmad Usman Girka", 
-        level: "400L", 
-        faculty: "Nursing Science", 
-        image: girkaImage 
-    },
-    { 
-        role: "P.R.O I", 
-        name: "Olokor Simbiat", 
-        level: "400L", 
-        faculty: "Nursing Science", 
-        image: simbiatImage 
-    },
-    { 
-        role: "P.R.O II", 
-        name: "Lawal Jubril Opeyemi", 
-        level: "300L", 
-        faculty: "Nursing Science", 
-        image: jubrilImage 
-    },
+    { role: "Chairman", name: "Olokor Simbiat", level: "400L", faculty: "Nursing Science", image: simbiatImage },
+    { role: "Deputy Chairman", name: "Ahmad Usman Girka", level: "400L", faculty: "Nursing Science", image: girkaImage },
+    { role: "Electoral Organizer", name: "Lawal Jubril", level: "300L", faculty: "Nursing Science", image: jubrilImage },
+    { role: "Secretary", name: "Yisa-Apata Islamiat", level: "300L", faculty: "Nursing Science", image: secretaryImage },
+    { role: "Treasurer", name: "Oyetunde Mariam", level: "200L", faculty: "Nursing Science", image: null },
+    { role: "P.R.O I", name: "Abdulqoyyum Najeemdeen", level: "200L", faculty: "Nursing Science", image: null },
+    { role: "P.R.O II", name: "Idris Abidat", level: "100L", faculty: "Nursing Science", image: null },
 ];
 
 // --- COMMITTEE MEMBER CARD COMPONENT ---
 const CommitteeMemberCard = ({ role, name, level, faculty, image }: CommitteeMember) => {
     // Basic heuristic to determine male/female placeholder for missing image
-    const isFemale = name.includes("Sherifat") || name.includes("Islamiat") || name.includes("Zulaihat") || name.includes("Simbiat");
+    const isFemale = name.includes("Sherifat") || name.includes("Islamiat") || name.includes("Zulaihat") || name.includes("Simbiat") || name.includes("Mariam") || name.includes("Abidat");
     
     return (
         <Card className="p-4 flex flex-col items-center text-center hover:shadow-xl transition-shadow duration-300">
@@ -360,9 +318,15 @@ const Index = () => {
                 {/* ========================================================= */}
                 <section className="py-16 md:py-24 px-4 bg-white dark:bg-gray-950">
                     <div className="container mx-auto max-w-6xl">
-                        <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-12 text-foreground">
-                            Meet the Electoral Committee 2025/2026 ⚖️
+                        <h2 className="text-3xl md:text-4xl font-extrabold text-center mb-4 text-foreground">
+                            Meet the Electoral Committee 2026/2027 ⚖️
                         </h2>
+                        <p className="text-center text-muted-foreground mb-8">
+                            Looking for previous sessions?{" "}
+                            <Link to="/electoral-committee" className="text-primary font-semibold underline underline-offset-4">
+                                View all electoral committees
+                            </Link>
+                        </p>
                         
                         <Collapsible className="w-full">
                             <CollapsibleTrigger asChild>

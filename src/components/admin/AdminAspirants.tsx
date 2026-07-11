@@ -14,6 +14,33 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { getSignedStorageUrl } from "@/lib/storage-url";
+
+// Resolves a stored aspirant-documents URL/path to a fresh signed URL
+const useSignedAspirantUrl = (url: string | null | undefined) => {
+  const [signed, setSigned] = useState<string | null>(null);
+  useEffect(() => {
+    let active = true;
+    if (!url) { setSigned(null); return; }
+    getSignedStorageUrl("aspirant-documents", url, 3600).then((u) => {
+      if (active) setSigned(u);
+    });
+    return () => { active = false; };
+  }, [url]);
+  return signed;
+};
+
+const SignedImage = ({ url, alt, className }: { url: string | null; alt: string; className?: string }) => {
+  const signed = useSignedAspirantUrl(url);
+  if (!signed) {
+    return (
+      <div className={`flex items-center justify-center bg-muted text-muted-foreground ${className || ""}`}>
+        <Loader2 className="w-6 h-6 animate-spin" />
+      </div>
+    );
+  }
+  return <img src={signed} alt={alt} className={className} />;
+};
 
 // NEW HELPER FUNCTION: Safely formats a date string for display
 // Now includes an option to omit the time.
@@ -392,7 +419,10 @@ export function AdminAspirants() {
         <Button
           variant={viewFullOption ? "default" : "outline"}
           size="sm"
-          onClick={() => window.open(url, '_blank')}
+          onClick={async () => {
+            const signed = await getSignedStorageUrl("aspirant-documents", url, 3600);
+            window.open(signed || url, "_blank");
+          }}
         >
           <Eye className="w-4 h-4 mr-1" />
           
@@ -471,8 +501,8 @@ Please prepare all required documents and be punctual.`;
                     <h4 className="font-semibold text-base">Aspirant Photo</h4>
                     {aspirant.photo_url ? (
                         <div className="aspect-square w-full max-w-[200px] border rounded-md overflow-hidden">
-                            <img
-                                src={aspirant.photo_url}
+                            <SignedImage
+                                url={aspirant.photo_url}
                                 alt={`${aspirant.full_name}'s photo`}
                                 className="w-full h-full object-cover"
                             />
