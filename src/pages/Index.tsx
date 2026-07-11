@@ -52,57 +52,15 @@ interface CommitteeMember {
     image: string | null;
 }
 
-// --- COMMITTEE MEMBER DATA ---
+// --- COMMITTEE MEMBER DATA (2026/2027 – current session) ---
 const committeeMembers: CommitteeMember[] = [
-    { 
-        role: "Chairman", 
-        name: "Awwal Abubakar Sadik", 
-        level: "500L", 
-        faculty: "Nursing Science", 
-        image: chairmanImage 
-    },
-    { 
-        role: "Deputy Chairman", 
-        name: "Abdulhameed Sherifat O.", 
-        level: "500L", 
-        faculty: "Nursing Science", 
-        image: deputyChairmanImage 
-    },
-    { 
-        role: "Secretary", 
-        name: "Yisa-Apata Islamiat T.", 
-        level: "300L", 
-        faculty: "Nursing Science", 
-        image: secretaryImage 
-    },
-    { 
-        role: "Treasurer", 
-        name: "Musa Zulaihat Dalhatu", 
-        level: "500L", 
-        faculty: "Nursing Science", 
-        image: null // Placeholder used as requested
-    },
-    { 
-        role: "Electoral Organizer", 
-        name: "Ahmad Usman Girka", 
-        level: "400L", 
-        faculty: "Nursing Science", 
-        image: girkaImage 
-    },
-    { 
-        role: "P.R.O I", 
-        name: "Olokor Simbiat", 
-        level: "400L", 
-        faculty: "Nursing Science", 
-        image: simbiatImage 
-    },
-    { 
-        role: "P.R.O II", 
-        name: "Lawal Jubril Opeyemi", 
-        level: "300L", 
-        faculty: "Nursing Science", 
-        image: jubrilImage 
-    },
+    { role: "Chairman", name: "Olokor Simbiat", level: "400L", faculty: "Nursing Science", image: simbiatImage },
+    { role: "Deputy Chairman", name: "Ahmad Usman Girka", level: "400L", faculty: "Nursing Science", image: girkaImage },
+    { role: "Electoral Organizer", name: "Lawal Jubril", level: "300L", faculty: "Nursing Science", image: jubrilImage },
+    { role: "Secretary", name: "Yisa-Apata Islamiat", level: "300L", faculty: "Nursing Science", image: secretaryImage },
+    { role: "Treasurer", name: "Oyetunde Mariam", level: "200L", faculty: "Nursing Science", image: null },
+    { role: "P.R.O I", name: "Abdulqoyyum Najeemdeen", level: "200L", faculty: "Nursing Science", image: null },
+    { role: "P.R.O II", name: "Idris Abidat", level: "100L", faculty: "Nursing Science", image: null },
 ];
 
 // --- COMMITTEE MEMBER CARD COMPONENT ---
