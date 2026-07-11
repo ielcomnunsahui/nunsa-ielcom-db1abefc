@@ -8,6 +8,7 @@ import { Trophy } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import RegistrationFlow from "@/components/RegistrationFlow";
 import MatricLoginForm from "@/components/MatricLoginForm";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 const AspirantLogin = () => {
   const navigate = useNavigate();
@@ -57,7 +58,9 @@ const AspirantLogin = () => {
                     <strong>One account for voting & aspiring.</strong> Complete registration here — the same email and password will log you in to the aspirant portal.
                   </p>
                 </div>
-                <RegistrationFlow successMessage="You've registered! Log in on the Login tab to apply as an aspirant." />
+                <ErrorBoundary fallbackTitle="Registration hit a snag">
+                  <RegistrationFlow successMessage="You've registered! Log in on the Login tab to apply as an aspirant." />
+                </ErrorBoundary>
               </TabsContent>
             </Tabs>
           </Card>
