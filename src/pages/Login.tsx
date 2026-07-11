@@ -8,6 +8,7 @@ import Navbar from "@/components/Navbar";
 import { useAuth } from "@/hooks/use-auth";
 import MatricLoginForm from "@/components/MatricLoginForm";
 import RegistrationFlow from "@/components/RegistrationFlow";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -61,7 +62,9 @@ const Login = () => {
               </TabsContent>
 
               <TabsContent value="signup" className="space-y-4 mt-6">
-                <RegistrationFlow successMessage="You've registered! Switch to the Login tab and sign in with your matric number." />
+                <ErrorBoundary fallbackTitle="Registration hit a snag">
+                  <RegistrationFlow successMessage="You've registered! Switch to the Login tab and sign in with your matric number." />
+                </ErrorBoundary>
               </TabsContent>
             </Tabs>
           </Card>

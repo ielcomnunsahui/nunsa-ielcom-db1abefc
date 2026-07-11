@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import { Card } from "@/components/ui/card";
 import { Shield } from "lucide-react";
 import RegistrationFlow from "@/components/RegistrationFlow";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 const Register = () => {
   return (
@@ -15,7 +16,9 @@ const Register = () => {
                 <Shield className="w-8 h-8 text-primary-foreground" />
               </div>
             </div>
-            <RegistrationFlow />
+            <ErrorBoundary fallbackTitle="Registration hit a snag">
+              <RegistrationFlow />
+            </ErrorBoundary>
             <div className="mt-8 p-4 bg-muted/30 rounded-lg">
               <h4 className="font-semibold text-sm mb-2 text-foreground">Security Notice</h4>
               <ul className="text-xs text-muted-foreground list-disc list-inside space-y-1">
