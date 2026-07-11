@@ -21,6 +21,7 @@ import AspirantDashboard from "./pages/AspirantDashboard";
 import AspirantApplication from "./pages/AspirantApplication";
 import PublicCandidatesView from "./pages/PublicCandidatesView";
 import PublicResults from "./pages/PublicResults";
+import ElectoralCommittee from "./pages/ElectoralCommittee";
 
 const queryClient = new QueryClient();
 
@@ -42,6 +43,7 @@ const App = () => (
           <Route path="/candidates" element={<PublicCandidatesView />} />
           <Route path="/setup-admin" element={<SetupAdmin />} />
           <Route path="/public-results" element={<PublicResults />} />
+          <Route path="/electoral-committee" element={<ElectoralCommittee />} />
           <Route path="/" element={<Index />} />
           
             <Route path="/register" element={<Register />} />
