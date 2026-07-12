@@ -32,9 +32,9 @@ const contactMethods = [
   {
     icon: MessageCircle,
     title: 'WhatsApp Chat',
-    description: 'Instant chat for quick questions and issues.',
-    contact: '+234 704 064 0646',
-    href: 'https://wa.me/2347040640646',
+    description: 'Chat the Deputy Chairman, IELCOM for quick help.',
+    contact: '+234 912 350 2971',
+    href: 'https://wa.me/2349123502971',
     color: 'bg-green-600',
     hover: 'hover:border-green-600',
     linkText: 'Start Chat'
@@ -89,11 +89,19 @@ const faqs = [
   },
   {
     question: 'Is my vote secure and private?',
-    answer: 'Yes, we use advanced security measures including encryption, audit trails, and biometric authentication to ensure vote security and privacy. Your vote is anonymous and auditable.'
+    answer: 'Yes. We use encryption, audit trails, and email-based OTP verification during registration to keep the process secure. Your vote is anonymous and auditable.'
   },
   {
     question: 'What if I forgot my login credentials?',
-    answer: 'You can use the "Forgot Password" option on the login page, or contact support via Email or WhatsApp for immediate assistance in recovering your account.'
+    answer: 'On the login page, use "Forgot Password" — enter your matric number to receive an OTP by email, then set a new password. If you\'re still stuck, message the Deputy Chairman, IELCOM on WhatsApp: +234 912 350 2971.'
+  },
+  {
+    question: 'What happens if my matric number is not on the eligible list?',
+    answer: 'You\'ll see a dialog during registration with a WhatsApp button to contact the Deputy Chairman, IELCOM (+234 912 350 2971) so your matric can be added to the eligible voter roster.'
+  },
+  {
+    question: 'Didn\'t receive the OTP email?',
+    answer: 'Check your Spam/Promotions folder. Codes expire after a few minutes — tap "Resend code" on the verification step (there\'s a short cooldown). Ensure the email you entered is correct; you can go back and change it before requesting a new code.'
   },
 ];
 
