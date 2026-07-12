@@ -984,9 +984,9 @@ const AspirantApplication = () => {
                     <h3 className="font-semibold text-green-900 dark:text-green-300 mb-2">Payment Instructions</h3>
                     <div className="text-sm text-green-800 dark:text-green-400 space-y-1">
                      
-                      <p><strong>Account Number:</strong> 9129196214 </p>
-                      <p><strong>Bank:</strong> MONIEPOINT </p>
-                      <p><strong>Account Name:</strong> Musa Zulaihat Dalhatu </p>
+                      <p><strong>Account Number:</strong> 8107583839 </p>
+                      <p><strong>Bank:</strong> Moniepoint </p>
+                      <p><strong>Account Name:</strong> Oyetunde Mariam Ayomide </p>
                     </div>
                   </Card>
                 <div className="space-y-2">
@@ -1022,9 +1022,9 @@ const AspirantApplication = () => {
                     <h3 className="font-semibold text-green-900 dark:text-green-300 mb-2">Payment Instructions</h3>
                     <div className="text-sm text-green-800 dark:text-green-400 space-y-1">
                       <p><strong>Amount:</strong> ₦{selectedPosition.application_fee.toLocaleString()}</p>
-                      <p><strong>Account Number:</strong> 9129196214 </p>
-                      <p><strong>Bank:</strong> MONIEPOINT </p>
-                      <p><strong>Account Name:</strong> Musa Zulaihat Dalhatu </p>
+                      <p><strong>Account Number:</strong> 8107583839 </p>
+                      <p><strong>Bank:</strong> Moniepoint </p>
+                      <p><strong>Account Name:</strong> Oyetunde Mariam Ayomide </p>
                     </div>
                   </Card>
                 )}
