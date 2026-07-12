@@ -677,9 +677,9 @@ export function AdminStudentRoster() {
             )}
             </CardContent>
             <CardFooter className="pt-4 border-t bg-gray-50 rounded-b-lg">
-              <Button onClick={refreshAllData} variant="outline" disabled={isLoadingRoster || isLoadingVoters} className="w-full sm:w-auto border-blue-300 hover:bg-blue-50">
-                  <RefreshCw className={`w-4 h-4 mr-2 ${(isLoadingRoster || isLoadingVoters) ? 'animate-spin' : ''}`} />
-                  {(isLoadingRoster || isLoadingVoters) ? 'Refreshing...' : 'Refresh Data & Analytics'}
+              <Button onClick={refreshAllData} variant="outline" disabled={isLoadingRoster} className="w-full sm:w-auto border-blue-300 hover:bg-blue-50">
+                  <RefreshCw className={`w-4 h-4 mr-2 ${(isLoadingRoster) ? 'animate-spin' : ''}`} />
+                  {(isLoadingRoster) ? 'Refreshing...' : 'Refresh Data & Analytics'}
               </Button>
             </CardFooter>
         </Card>
