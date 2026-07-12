@@ -215,25 +215,31 @@ function SupportPage() {
               </summary>
               <div className="p-5 sm:p-6 bg-white dark:bg-gray-800">
                 <p className="mb-4 font-semibold text-gray-700 dark:text-gray-300">
-                    Ready to cast your ballot? Follow these steps to ensure you are successfully registered and eligible to vote.
+                    Ready to cast your ballot? Follow these steps to ensure you are successfully registered and eligible to vote for the 2026/2027 NUNSA Election.
                 </p>
                 
-                <h4 className="text-lg font-bold text-gray-900 dark:text-white mt-4 mb-2">The 3-Step Process:</h4>
+                <h4 className="text-lg font-bold text-gray-900 dark:text-white mt-4 mb-2">Step-by-step:</h4>
                 <ol className="list-decimal list-inside space-y-3 pl-4 text-gray-600 dark:text-gray-400">
                     <li>
-                        <span className="font-bold text-gray-800 dark:text-gray-200">Account Sign-up:</span> Visit the <a href="/register" className="text-indigo-600 hover:underline">Registration Portal</a> and complete the initial form with your personal and academic details.
+                        <span className="font-bold text-gray-800 dark:text-gray-200">Enter Matric Number:</span> Visit the <a href="/register" className="text-indigo-600 hover:underline">Registration Portal</a> and enter your matric number. We check it against the admin-uploaded eligible voter list. If it's not listed, a dialog will let you message the Deputy Chairman on WhatsApp (+234 912 350 2971) to be added.
                     </li>
                     <li>
-                        <span className="font-bold text-gray-800 dark:text-gray-200">Email Verification:</span> An email containing a verification link will be sent to the address you provided. You must click this link to confirm your ownership and proceed to the next step.
+                        <span className="font-bold text-gray-800 dark:text-gray-200">Confirm Identity &amp; Email:</span> Your name is pre-filled from the eligible list. Enter the email address you want to use for the election.
                     </li>
                     <li>
-                        <span className="font-bold text-gray-800 dark:text-gray-200">Biometric Authentication:</span> For secure voting, you will be required to set up your Biometric (Fingerprint/Face) ID OR OTP Fallback via Email. This is crucial for logging in on Election Day and preventing voter fraud. Follow the on-screen prompts carefully.
+                        <span className="font-bold text-gray-800 dark:text-gray-200">Email OTP Verification:</span> A 6-digit code is emailed to you. Enter it on the verification step. Codes expire — use "Resend code" if needed (short cooldown between resends).
+                    </li>
+                    <li>
+                        <span className="font-bold text-gray-800 dark:text-gray-200">Create Password:</span> Set a password (min. 8 characters) and confirm it. You'll use your <strong>matric number</strong> and this password to log in and vote on Election Day.
+                    </li>
+                    <li>
+                        <span className="font-bold text-gray-800 dark:text-gray-200">Done!</span> You'll see a "Congratulations" screen confirming you're registered for the 2026/2027 NUNSA Election.
                     </li>
                 </ol>
 
                 <div className="mt-6 p-4 bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 rounded-lg text-sm text-yellow-800 dark:text-yellow-300">
                     <p className="font-bold">Important Note:</p>
-                    <p>Registration is only valid during the official registration period. Your eligibility is subject to verification by the IELCOM based on your academic status and the NUNSA Constitution</p>
+                    <p>Registration is only valid during the official registration period. Your eligibility is subject to verification by IELCOM based on your academic status and the NUNSA Constitution.</p>
                 </div>
               </div>
             </details>
@@ -262,9 +268,9 @@ function SupportPage() {
                         <span className="font-bold text-gray-800 dark:text-gray-200">Eligibility Check:</span> Review the Electoral Rules (<a href="/rules" className="text-indigo-600 hover:underline">link</a>) to confirm your CGPA and academic level meet the requirements for your desired position.
                     </li>
                     <li>
-                        <span className="font-bold text-gray-800 dark:text-gray-200">Application Fee Payment:</span> Pay the required fee through the portal. This step must be completed before accessing the main form.
+                        <span className="font-bold text-gray-800 dark:text-gray-200">Application Fee Payment:</span> Pay the required fee to <strong>Acct No: 8107583839, Moniepoint, Oyetunde Mariam Ayomide</strong>, then send proof of payment to the Deputy Chairman, IELCOM on WhatsApp (+234 912 350 2971) OR upload it in the application form.
                         <div className="flex items-center gap-2 mt-1 text-sm text-gray-500">
-                            <CreditCard className="w-4 h-4" /> Proof of payment is automatically recorded.
+                            <CreditCard className="w-4 h-4" /> Keep your receipt/screenshot handy.
                         </div>
                     </li>
                     <li>
