@@ -984,9 +984,9 @@ const AspirantApplication = () => {
                     <h3 className="font-semibold text-green-900 dark:text-green-300 mb-2">Payment Instructions</h3>
                     <div className="text-sm text-green-800 dark:text-green-400 space-y-1">
                      
-                      <p><strong>Account Number:</strong> 9129196214 </p>
-                      <p><strong>Bank:</strong> MONIEPOINT </p>
-                      <p><strong>Account Name:</strong> Musa Zulaihat Dalhatu </p>
+                      <p><strong>Account Number:</strong> 8107583839 </p>
+                      <p><strong>Bank:</strong> Moniepoint </p>
+                      <p><strong>Account Name:</strong> Oyetunde Mariam Ayomide </p>
                     </div>
                   </Card>
                 <div className="space-y-2">
@@ -1022,9 +1022,9 @@ const AspirantApplication = () => {
                     <h3 className="font-semibold text-green-900 dark:text-green-300 mb-2">Payment Instructions</h3>
                     <div className="text-sm text-green-800 dark:text-green-400 space-y-1">
                       <p><strong>Amount:</strong> ₦{selectedPosition.application_fee.toLocaleString()}</p>
-                      <p><strong>Account Number:</strong> 9129196214 </p>
-                      <p><strong>Bank:</strong> MONIEPOINT </p>
-                      <p><strong>Account Name:</strong> Musa Zulaihat Dalhatu </p>
+                      <p><strong>Account Number:</strong> 8107583839 </p>
+                      <p><strong>Bank:</strong> Moniepoint </p>
+                      <p><strong>Account Name:</strong> Oyetunde Mariam Ayomide </p>
                     </div>
                   </Card>
                 )}
@@ -1038,13 +1038,13 @@ const AspirantApplication = () => {
     {/* Option 2: Send via WhatsApp */}
     <div className="space-y-4">
       <Label className="text-lg font-semibold">
-        Option 2: Send Proof to IELCOM Treasurer on WhatsApp
+        Option 2: Send Proof of Payment on WhatsApp
       </Label>
       <Card className="p-5 bg-blue-50 border border-blue-300">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="text-center sm:text-left">
-            <p className="font-medium">Treasurer Contact:</p>
-            <p className="text-2xl font-bold text-primary">0912 919 6214</p>
+            <p className="font-medium">Deputy Chairman, IELCOM:</p>
+            <p className="text-2xl font-bold text-primary">+234 912 350 2971</p>
             <p className="text-sm text-muted-foreground mt-1">Click button → Attach proof → Send</p>
           </div>
           <Button
@@ -1053,7 +1053,7 @@ const AspirantApplication = () => {
             onClick={() => {
               const positionName = selectedPosition?.name || "Aspirant Position";
               const message = `Attached is my proof of payment for the position of *${positionName}*.\n\nMatric No: *${applicationData.matric || "N/A"}*\nFull Name: *${applicationData.full_name || "N/A"}*`;
-              const whatsappUrl = `https://wa.me/2349129196214?text=${encodeURIComponent(message)}`;
+              const whatsappUrl = `https://wa.me/2349123502971?text=${encodeURIComponent(message)}`;
               window.open(whatsappUrl, "_blank");
             }}
           >
@@ -1069,7 +1069,7 @@ const AspirantApplication = () => {
                     <div className="text-sm">
                       <p className="font-medium text-amber-900 dark:text-amber-300 mb-1">Payment Guidelines:</p>
                       <ul className="text-amber-800 dark:text-amber-400 space-y-1">
-                        <li>• Contact Treasurer on whatsapp: +234 912 919 6214 before making payment</li>
+                        <li>• Send proof of payment to Deputy Chairman IELCOM on WhatsApp: +234 912 350 2971</li>
                         <li>• Upload screenshot or receipt of payment (Image/PDF, max 2MB)</li>
                         <li>• Ensure the payment amount matches the application fee exactly</li>
                         <li>• Include your name and matric number in the payment reference if possible</li>
