@@ -9,6 +9,8 @@ import { useToast } from "@/hooks/use-toast";
 import { Loader2, ArrowLeft, ArrowRight, Mail, Hash, KeyRound, PartyPopper, CheckCircle2 } from "lucide-react";
 import confetti from "canvas-confetti";
 import { FunctionsHttpError } from "@supabase/supabase-js";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { MessageCircle, AlertTriangle } from "lucide-react";
 
 type Step = 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -47,6 +49,8 @@ export default function RegistrationFlow({ onComplete, successMessage }: Props) 
   const [isLoading, setIsLoading] = useState(false);
   const [secondsLeft, setSecondsLeft] = useState(0);
   const [cooldown, setCooldown] = useState(0);
+  const [ineligibleOpen, setIneligibleOpen] = useState(false);
+  const [ineligibleMatric, setIneligibleMatric] = useState("");
   const timerRef = useRef<number | null>(null);
   const cdRef = useRef<number | null>(null);
   const { toast } = useToast();
@@ -95,7 +99,13 @@ export default function RegistrationFlow({ onComplete, successMessage }: Props) 
       setName(data.name);
       goto(2);
     } catch (err: any) {
-      toast({ title: "Cannot proceed", description: err?.message ?? "Please try again.", variant: "destructive" });
+      const msg: string = err?.message ?? "Please try again.";
+      if (/not on the eligible voter list|not eligible/i.test(msg)) {
+        setIneligibleMatric(v);
+        setIneligibleOpen(true);
+      } else {
+        toast({ title: "Cannot proceed", description: msg, variant: "destructive" });
+      }
     } finally { setIsLoading(false); }
   };
 
@@ -163,6 +173,36 @@ export default function RegistrationFlow({ onComplete, successMessage }: Props) 
 
   return (
     <div>
+      <Dialog open={ineligibleOpen} onOpenChange={setIneligibleOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-destructive">
+              <AlertTriangle className="w-5 h-5" /> Matric Not Eligible
+            </DialogTitle>
+            <DialogDescription>
+              The matric number <span className="font-mono font-semibold">{ineligibleMatric.toUpperCase()}</span> is not on the admin-uploaded eligible voter list.
+              Please contact the Electoral Committee to be added.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="p-3 rounded-md border bg-muted/40 text-sm">
+            <div className="font-semibold text-foreground">Deputy Chairman, IELCOM</div>
+            <div className="text-muted-foreground">Ahmad Usman Girka — +234 912 350 2971</div>
+          </div>
+          <DialogFooter className="gap-2 sm:gap-2">
+            <Button variant="outline" onClick={() => setIneligibleOpen(false)}>Close</Button>
+            <Button
+              className="bg-green-600 hover:bg-green-700 text-white"
+              onClick={() => {
+                const msg = `Hello Deputy Chairman, my matric number *${ineligibleMatric.toUpperCase()}* is not on the eligible voter list. Please add me so I can register for the 2026/2027 NUNSA Election.`;
+                window.open(`https://wa.me/2349123502971?text=${encodeURIComponent(msg)}`, "_blank");
+              }}
+            >
+              <MessageCircle className="w-4 h-4 mr-2" /> Message on WhatsApp
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       <div className="text-center mb-6">
         <h2 className="text-2xl font-bold mb-1 text-foreground">
           {step === 5 ? "Congratulations! 🎉" : "Voter Registration"}
