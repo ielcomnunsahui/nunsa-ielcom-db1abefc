@@ -4,13 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
-import { Upload, Download, Loader2, CheckCircle2, AlertCircle, ChevronDown, ChevronUp, GraduationCap, Search, RefreshCw, BarChart3, FileText } from "lucide-react"; 
+import { Upload, Download, Loader2, CheckCircle2, AlertCircle, ChevronDown, ChevronUp, GraduationCap, Search, RefreshCw, BarChart3, FileText, UserPlus, Plus, Trash2 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"; 
 import { Separator } from "@/components/ui/separator";
-import { VoterAnalyticsCard } from "./VoterAnalyticsCard";
-import { getStudentLevelSync, calculateVoterAnalytics, LEVEL_ORDER, VoterAnalytics } from "@/utils/levelCalculator";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { getStudentLevelSync, LEVEL_ORDER } from "@/utils/levelCalculator";
 
 // Define interfaces for type safety
 interface Student {
@@ -21,16 +22,6 @@ interface Student {
 
 interface GroupedRoster {
   [level: string]: Student[];
-}
-
-interface Voter {
-  id: string;
-  matric: string;
-  name: string;
-  email: string;
-  verified: boolean;
-  voted: boolean;
-  created_at: string;
 }
 
 // --- CONFIGURATION ---
@@ -50,10 +41,15 @@ export function AdminStudentRoster() {
   const [openLevels, setOpenLevels] = useState<Set<string>>(new Set()); 
   const [rosterSearchTerm, setRosterSearchTerm] = useState("");
 
-  // Voter Analytics State
-  const [voters, setVoters] = useState<Voter[]>([]);
-  const [isLoadingVoters, setIsLoadingVoters] = useState(true);
-  const [voterAnalytics, setVoterAnalytics] = useState<VoterAnalytics[]>([]);
+  // Manual add state
+  const [singleMatric, setSingleMatric] = useState("");
+  const [singleName, setSingleName] = useState("");
+  const [singleLevel, setSingleLevel] = useState("");
+  const [isAddingSingle, setIsAddingSingle] = useState(false);
+
+  const [bulkText, setBulkText] = useState("");
+  const [isAddingBulk, setIsAddingBulk] = useState(false);
+  const [bulkResult, setBulkResult] = useState<{ success: number; errors: string[] } | null>(null);
   
   // --- Data Fetching & Processing ---
 
@@ -72,8 +68,9 @@ export function AdminStudentRoster() {
       const groupedData: GroupedRoster = {};
 
       students.forEach(student => {
-        // Use level from database if available, otherwise calculate from matric
-        const studentLevel = student.level || getStudentLevelSync(student.matric);
+        // Trust database level exclusively; only fall back to matric calc if level is missing
+        const dbLevel = student.level && String(student.level).trim();
+        const studentLevel = dbLevel ? dbLevel : getStudentLevelSync(student.matric);
         
         if (!groupedData[studentLevel]) {
           groupedData[studentLevel] = [];
@@ -100,45 +97,18 @@ export function AdminStudentRoster() {
     }
   }, [toast]);
 
-  const fetchVoters = useCallback(async () => {
-    setIsLoadingVoters(true);
-    try {
-      const { data, error } = await supabase
-        .from("voters")
-        .select("id, matric, name, email, verified, voted, created_at")
-        .order("created_at", { ascending: false });
-
-      if (error) throw error;
-      setVoters(data || []);
-    } catch (error) {
-      console.error("Error fetching voters:", error);
-      toast({
-        title: "Error",
-        description: "Failed to load voter data for analytics.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoadingVoters(false);
-    }
-  }, [toast]);
-
-  // Calculate analytics when data changes
-  useEffect(() => {
-    if (allStudents.length > 0 && !isLoadingVoters) {
-      const analytics = calculateVoterAnalytics(allStudents, voters);
-      setVoterAnalytics(analytics);
-    }
-  }, [allStudents, voters, isLoadingVoters]);
-
   useEffect(() => {
     fetchStudentRoster();
-    fetchVoters();
-  }, [fetchStudentRoster, fetchVoters]);
+  }, [fetchStudentRoster]);
 
   // --- Filtered Roster (Memoized for performance) ---
 
   const sortedLevels = useMemo(() => {
-    return LEVEL_ORDER.filter(level => roster[level] && roster[level].length > 0);
+    const known = LEVEL_ORDER.filter(level => roster[level] && roster[level].length > 0);
+    const extras = Object.keys(roster)
+      .filter(l => !LEVEL_ORDER.includes(l) && roster[l].length > 0)
+      .sort();
+    return [...known, ...extras];
   }, [roster]);
   
   const totalStudents = allStudents.length;
@@ -276,7 +246,82 @@ export function AdminStudentRoster() {
 
   const refreshAllData = () => {
     fetchStudentRoster();
-    fetchVoters();
+  };
+
+  // --- Manual add: single ---
+  const handleAddSingle = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const m = singleMatric.trim().toLowerCase();
+    const n = singleName.trim();
+    if (!/^\d{2}\/\d{2}[a-z]{3}\d{3}$/.test(m)) {
+      toast({ title: "Invalid matric", description: "Example: 21/08nus014", variant: "destructive" });
+      return;
+    }
+    if (!n) {
+      toast({ title: "Name required", variant: "destructive" });
+      return;
+    }
+    setIsAddingSingle(true);
+    try {
+      const level = singleLevel || getStudentLevelSync(m);
+      const { error } = await supabase
+        .from("student_roster")
+        .upsert([{ matric: m, name: n, level }], { onConflict: "matric" });
+      if (error) throw error;
+      toast({ title: "Student added", description: `${n} (${m.toUpperCase()}) is now eligible.` });
+      setSingleMatric(""); setSingleName(""); setSingleLevel("");
+      fetchStudentRoster();
+    } catch (err: any) {
+      toast({ title: "Add failed", description: err?.message ?? "Try again.", variant: "destructive" });
+    } finally {
+      setIsAddingSingle(false);
+    }
+  };
+
+  // --- Manual add: bulk paste ---
+  const handleAddBulk = async () => {
+    const lines = bulkText.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+    if (lines.length === 0) {
+      toast({ title: "Nothing to add", description: "Paste one entry per line.", variant: "destructive" });
+      return;
+    }
+    setIsAddingBulk(true);
+    setBulkResult(null);
+    const errors: string[] = [];
+    const valid: Student[] = [];
+    lines.forEach((line, idx) => {
+      const parts = line.split(/[,\t]/).map(s => s.trim());
+      const [rawMatric, name, csvLevel] = parts;
+      const matric = (rawMatric || "").toLowerCase();
+      if (!matric || !name) {
+        errors.push(`Line ${idx + 1}: expected "matric, name, level"`);
+        return;
+      }
+      if (!/^\d{2}\/\d{2}[a-z]{3}\d{3}$/.test(matric)) {
+        errors.push(`Line ${idx + 1}: invalid matric "${rawMatric}"`);
+        return;
+      }
+      const level = csvLevel || getStudentLevelSync(matric);
+      valid.push({ matric, name, level });
+    });
+    try {
+      if (valid.length > 0) {
+        const { error } = await supabase
+          .from("student_roster")
+          .upsert(valid, { onConflict: "matric" });
+        if (error) throw error;
+      }
+      setBulkResult({ success: valid.length, errors });
+      if (valid.length > 0) {
+        toast({ title: "Bulk add complete", description: `${valid.length} record(s) added/updated.` });
+        setBulkText("");
+        fetchStudentRoster();
+      }
+    } catch (err: any) {
+      toast({ title: "Bulk add failed", description: err?.message ?? "Try again.", variant: "destructive" });
+    } finally {
+      setIsAddingBulk(false);
+    }
   };
 
   // --- Helper Component ---
@@ -349,12 +394,6 @@ export function AdminStudentRoster() {
 
       <Separator className="bg-gray-200" />
 
-      {/* VOTER ANALYTICS SECTION */}
-      <VoterAnalyticsCard 
-        analytics={voterAnalytics} 
-        isLoading={isLoadingRoster || isLoadingVoters} 
-      />
-
       {/* STATISTICS */}
       <Card className="shadow-lg bg-white border-t-4 border-blue-600">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -378,6 +417,83 @@ export function AdminStudentRoster() {
                     <p className="text-xl font-extrabold text-yellow-600 mt-1">2025/2026</p>
                 </div>
             </div>
+        </CardContent>
+      </Card>
+
+      {/* MANUAL ADD SECTION */}
+      <Card className="shadow-lg border-t-4 border-emerald-500">
+        <CardHeader>
+          <CardTitle className="text-xl font-bold flex items-center gap-2 text-gray-800">
+            <UserPlus className="w-5 h-5 text-emerald-600" />
+            Manually Add Eligible Voters
+          </CardTitle>
+          <CardDescription>Add a single matric or paste many at once (one per line: <span className="font-mono">matric, name, level</span>).</CardDescription>
+        </CardHeader>
+        <CardContent className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Single add */}
+          <form onSubmit={handleAddSingle} className="p-4 border rounded-lg bg-emerald-50/40 space-y-3">
+            <h3 className="font-semibold text-emerald-800 flex items-center gap-2"><Plus className="w-4 h-4" /> Add a single student</h3>
+            <div className="space-y-2">
+              <Label htmlFor="single-matric">Matric Number</Label>
+              <Input id="single-matric" value={singleMatric} onChange={(e) => setSingleMatric(e.target.value)} placeholder="21/08nus014" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="single-name">Full Name</Label>
+              <Input id="single-name" value={singleName} onChange={(e) => setSingleName(e.target.value)} placeholder="Full name" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="single-level">Level (optional — auto if blank)</Label>
+              <Select value={singleLevel} onValueChange={setSingleLevel}>
+                <SelectTrigger id="single-level"><SelectValue placeholder="Auto-detect from matric" /></SelectTrigger>
+                <SelectContent>
+                  {["100L","200L","300L","400L","500L","Final Year/Other"].map(l => (
+                    <SelectItem key={l} value={l}>{l}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <Button type="submit" disabled={isAddingSingle} className="bg-emerald-600 hover:bg-emerald-700 w-full">
+              {isAddingSingle ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Adding...</> : <><Plus className="w-4 h-4 mr-2" /> Add Student</>}
+            </Button>
+          </form>
+
+          {/* Bulk add */}
+          <div className="p-4 border rounded-lg bg-emerald-50/40 space-y-3">
+            <h3 className="font-semibold text-emerald-800 flex items-center gap-2"><FileText className="w-4 h-4" /> Bulk add (paste)</h3>
+            <Textarea
+              value={bulkText}
+              onChange={(e) => setBulkText(e.target.value)}
+              rows={8}
+              placeholder={"21/08nus014, Awwal Abubakar, 500L\n24/08nus002, Abubakri Farouq, 200L"}
+              className="font-mono text-xs"
+            />
+            <p className="text-xs text-muted-foreground">One student per line, comma or tab separated. Level is optional.</p>
+            <Button onClick={handleAddBulk} disabled={isAddingBulk || !bulkText.trim()} className="bg-emerald-600 hover:bg-emerald-700 w-full">
+              {isAddingBulk ? <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Adding...</> : <><UserPlus className="w-4 h-4 mr-2" /> Add All</>}
+            </Button>
+            {bulkResult && (
+              <div className="space-y-2">
+                {bulkResult.success > 0 && (
+                  <Alert className="border-green-500 bg-green-50 text-green-700">
+                    <CheckCircle2 className="h-4 w-4 text-green-600" />
+                    <AlertTitle>Added {bulkResult.success} record(s)</AlertTitle>
+                  </Alert>
+                )}
+                {bulkResult.errors.length > 0 && (
+                  <Alert variant="destructive">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertTitle>{bulkResult.errors.length} skipped</AlertTitle>
+                    <AlertDescription>
+                      <div className="text-xs space-y-1 max-h-32 overflow-y-auto">
+                        {bulkResult.errors.slice(0, 8).map((e, i) => <div key={i}>{e}</div>)}
+                        {bulkResult.errors.length > 8 && <div>… and {bulkResult.errors.length - 8} more</div>}
+                      </div>
+                    </AlertDescription>
+                  </Alert>
+                )}
+              </div>
+            )}
+          </div>
         </CardContent>
       </Card>
 
